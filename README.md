@@ -64,3 +64,25 @@ BACKEND_URL=https://askfirst-backend.onrender.com
 6. Redeploy the frontend.
 
 For MongoDB, use MongoDB Atlas or another hosted MongoDB service. A local MongoDB URL like `mongodb://localhost:27017` will not work from Render.
+
+## Deploy frontend on Streamlit Community Cloud
+
+Streamlit Community Cloud runs only the Streamlit frontend. Deploy the FastAPI backend separately first, for example on Render.
+
+1. In Streamlit Community Cloud, create an app from this GitHub repo.
+2. Set the app entrypoint file to:
+
+```text
+app.py
+```
+
+3. In Advanced settings, select Python 3.12.
+4. Add this secret:
+
+```toml
+BACKEND_URL = "https://your-backend-name.onrender.com"
+```
+
+5. Deploy or reboot the app.
+
+If dependency installation fails, open "Manage app" and check the terminal log for the exact package error.

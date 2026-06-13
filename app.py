@@ -6,13 +6,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 REQUEST_TIMEOUT = 10
 
 st.set_page_config(page_title="AskFirst AI", layout="wide")
 
 if "active_thread_id" not in st.session_state:
     st.session_state.active_thread_id = None
+
+
+def get_config_value(key, default=None):
+    return os.getenv(key) or st.secrets.get(key, default)
+
+
+BACKEND_URL = get_config_value("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
 
 
 def get_threads():
