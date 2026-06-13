@@ -103,3 +103,7 @@ async def update_thread_title(thread_id: str, title: str):
         {"_id": ObjectId(thread_id)},
         {"$set": {"title": title}}
     )
+
+async def delete_thread(thread_id: str):
+    await threads_collection.delete_one({"_id": ObjectId(thread_id)})
+    await messages_collection.delete_many({"thread_id": thread_id})

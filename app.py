@@ -10,6 +10,20 @@ REQUEST_TIMEOUT = 10
 
 st.set_page_config(page_title="AskFirst AI", layout="wide")
 
+hide_streamlit_style = """
+<style>
+    /* Hide the Streamlit Deploy button */
+    .stDeployButton {display: none;}
+    /* Hide the Streamlit main menu (hamburger) */
+    #MainMenu {visibility: hidden;}
+    /* Hide the Streamlit footer */
+    footer {visibility: hidden;}
+    /* Hide the entire top header bar */
+    header {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 if "active_thread_id" not in st.session_state:
     st.session_state.active_thread_id = None
 
@@ -77,6 +91,12 @@ def send_message(thread_id, message):
     except requests.RequestException as e:
         return f"Error: Could not connect to backend ({e})"
 
+def delete_thread_request(thread_id):
+    try:
+        requests.delete(f"{BACKEND_URL}/threads/{thread_id}", timeout=REQUEST_TIMEOUT)
+    except requests.RequestException:
+        pass
+
 
 with st.sidebar:
     st.title("AskFirst AI")
@@ -127,7 +147,14 @@ elif st.session_state.active_thread_id:
             thread_title = thread["title"]
             break
 
-    st.header(thread_title)
+    col1, col2 = st.columns([0.85, 0.15])
+    with col1:
+        st.header(thread_title)
+    with col2:
+        if st.button("🗑️ Delete Chat", use_container_width=True):
+            delete_thread_request(st.session_state.active_thread_id)
+            st.session_state.active_thread_id = None
+            st.rerun()
 
     messages = get_messages(st.session_state.active_thread_id)
 
@@ -148,4 +175,3 @@ elif st.session_state.active_thread_id:
 else:
     st.title("Welcome to AskFirst AI")
     st.write("Select a chat from the sidebar or start a new one to begin.")
-    st.info("Make sure your FastAPI backend and MongoDB are running!")

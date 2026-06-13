@@ -1,88 +1,55 @@
-﻿# AskFirst
+# AskFirst AI Chat Application 🚀
 
-AskFirst is a Streamlit chat UI backed by a FastAPI API, MongoDB, and Gemini.
+A modern, full-stack AI chat application built with **Streamlit** (Frontend), **FastAPI** (Backend), and **MongoDB** (Database), powered by **Google Gemini**.
 
-## Local setup
+## ✨ Features
+- **Universal Memory**: The AI remembers context from your past conversations across different chat threads.
+- **Multiple Threads**: Create, manage, and seamlessly switch between different chat threads.
+- **Universal Thread View**: A chronological view of your entire chat history across all threads.
+- **Thread Management**: Automatically renames threads based on the first message, and allows you to delete unwanted chats.
+- **Clean UI**: A sleek, professional chat interface built with Streamlit.
 
-1. Install dependencies:
+## 🛠️ Tech Stack
+- **Frontend**: [Streamlit](https://streamlit.io/)
+- **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) (using Async Motor)
+- **AI Model**: Google Gemini (`gemini-pro`)
 
-```bash
-pip install -r requirements.txt
-```
+## 💻 Local Setup Instructions
 
-2. Copy `.env.example` to `.env` and fill in:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Navadeepbudime/AskFirst.git
+   cd AskFirst
+   ```
 
-```text
-MONGODB_URI=your_mongodb_connection_string
-GEMINI_API_KEY=your_gemini_api_key_here
-BACKEND_URL=http://127.0.0.1:8000
-```
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Start the backend:
+3. **Configure Environment Variables**
+   Rename `.env.example` to `.env` and fill in your credentials:
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   GEMINI_API_KEY=your_gemini_api_key
+   BACKEND_URL=http://localhost:8000
+   ```
 
-```bash
-uvicorn main:app --host 127.0.0.1 --port 8000
-```
+4. **Start the FastAPI Backend**
+   Open a terminal and run:
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-4. Start the frontend:
+5. **Start the Streamlit Frontend**
+   Open a second terminal and run:
+   ```bash
+   streamlit run app.py
+   ```
 
-```bash
-streamlit run app.py --server.address 127.0.0.1 --server.port 8501
-```
-
-## Deploy on Render
-
-This repo includes `render.yaml` for a two-service Render deploy:
-
-- `askfirst-backend`: FastAPI API
-- `askfirst-frontend`: Streamlit UI
-
-Deployment steps:
-
-1. Push this repo to GitHub.
-2. In Render, create a new Blueprint from the GitHub repo.
-3. Set these backend environment variables:
-
-```text
-MONGODB_URI=your_mongodb_atlas_connection_string
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-flash-latest
-```
-
-4. Deploy the backend first and copy its public URL, for example:
-
-```text
-https://askfirst-backend.onrender.com
-```
-
-5. Set this frontend environment variable:
-
-```text
-BACKEND_URL=https://askfirst-backend.onrender.com
-```
-
-6. Redeploy the frontend.
-
-For MongoDB, use MongoDB Atlas or another hosted MongoDB service. A local MongoDB URL like `mongodb://localhost:27017` will not work from Render.
-
-## Deploy frontend on Streamlit Community Cloud
-
-Streamlit Community Cloud runs only the Streamlit frontend. Deploy the FastAPI backend separately first, for example on Render.
-
-1. In Streamlit Community Cloud, create an app from this GitHub repo.
-2. Set the app entrypoint file to:
-
-```text
-app.py
-```
-
-3. In Advanced settings, select Python 3.12.
-4. Add this secret:
-
-```toml
-BACKEND_URL = "https://your-backend-name.onrender.com"
-```
-
-5. Deploy or reboot the app.
-
-If dependency installation fails, open "Manage app" and check the terminal log for the exact package error.
+## 🌐 Deployment
+This application is designed to be deployed separately for maximum performance:
+- **Database**: Host a free cluster on [MongoDB Atlas](https://www.mongodb.com/atlas).
+- **Backend**: Deploy `main.py` as a Web Service on [Render](https://render.com/). Add `GEMINI_API_KEY` and `MONGODB_URI` to your environment variables.
+- **Frontend**: Deploy `app.py` on [Streamlit Community Cloud](https://share.streamlit.io/). Add `BACKEND_URL` to your Streamlit secrets, pointing to your live Render backend URL.

@@ -14,7 +14,8 @@ from database import (
     get_messages, 
     get_universal_memory_context,
     ping_database,
-    update_thread_title
+    update_thread_title,
+    delete_thread
 )
 
 load_dotenv()
@@ -126,6 +127,12 @@ async def api_create_thread(request: ThreadCreate):
     await require_database()
     thread_id = await create_thread(request.title)
     return {"thread_id": thread_id, "title": request.title}
+
+@app.delete("/threads/{thread_id}")
+async def api_delete_thread(thread_id: str):
+    await require_database()
+    await delete_thread(thread_id)
+    return {"status": "deleted"}
 
 @app.get("/threads")
 async def api_get_threads():
