@@ -1,5 +1,7 @@
 # AskFirst AI Chat Application 🚀
 
+**🔴 Live Demo:** [https://askfirst-j2xf2v3qcj7udg3vmgxwti.streamlit.app/](https://askfirst-j2xf2v3qcj7udg3vmgxwti.streamlit.app/)
+
 A modern, full-stack AI chat application built with **Streamlit** (Frontend), **FastAPI** (Backend), and **MongoDB** (Database), powered by **Google Gemini**.
 
 ## ✨ Features
